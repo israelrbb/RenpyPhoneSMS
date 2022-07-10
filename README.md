@@ -15,3 +15,7 @@ This next part is already functional I just have to fix transitional bugs
 *ability to view text history
 *ability to send a new text within the phone
 
+
+
+https://user-images.githubusercontent.com/92654141/178160787-e033dd98-ed21-4892-913f-6f8d547c192a.mp4
+
