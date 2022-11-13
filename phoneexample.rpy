@@ -79,10 +79,11 @@ define pesistent.who = None
 
 init python:
     class contacts:
-        def __init__(self, who,img):
+        def __init__(self, who,img, tone):
             self.who = who
             self.img = img 
             self.list = []
+            self.tone = tone
 
         def sms(self, what, first = False, smshide = True):
             if self.who != "[mcname]":
@@ -93,17 +94,18 @@ init python:
             self.first = first
             self.smshide = smshide
             self.what = what
+            renpy.sound.play(self.tone)
             self.where.append([self.quien,[self.img,[self.what]]])
-            renpy.show_screen("phonesms", w = self)
+            renpy.show_screen("phonesms", w = self)          
             renpy.pause()
             if smshide:
                 renpy.hide_screen("phonesms")
 
 ####contactList###
 ############################
-define ksms = contacts("Kim","images/dkphone.png")
-define psms = contacts("Paty","images/patphone.png")
-define mcsms = contacts("[mcname]","images/momphone.png")
+define ksms = contacts("Kim","images/dkphone.png","audio/ReceiveText.ogg")
+define psms = contacts("Paty","images/patphone.png","audio/ReceiveText.ogg")
+define mcsms = contacts("[mcname]","images/momphone.png","audio/SendText.ogg")
 default contactl = [ksms,psms]
 
 screen phonesms(w):
