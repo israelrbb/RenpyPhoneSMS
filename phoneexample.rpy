@@ -2,7 +2,6 @@
 
 
 init -1 python:
-    phone_position_x = 0.3
     phone_position_y = 0.5
     phone_position_x = 0.3
     background_position_y = 0.44
