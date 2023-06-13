@@ -69,8 +69,8 @@ style phone_left:
 
 #### Parameters that control character image for new message, how the phone appears, and the reply box##
 define persistent.startsms = False  
-define pesistent.where = None
-define pesistent.who = None
+define persistent.where = None
+define persistent.who = None
 
 
 #########
@@ -87,10 +87,10 @@ init python:
 
         def sms(self, what, first = False, smshide = True):
             if self.who != "[mcname]":
-                pesistent.where = self.list
-                pesistent.who = self.who
-            self.quien = pesistent.who
-            self.where = pesistent.where
+                persistent.where = self.list
+                persistent.who = self.who
+            self.quien = persistent.who
+            self.where = persistent.where
             self.first = first
             self.smshide = smshide
             self.what = what
@@ -128,51 +128,52 @@ screen phonesms(w):
             viewport yadjustment yadj:
                 draggable True
                 mousewheel True
-                #yinitial 1.0  
                 vbox:
-                    for i in w.where:
+                    $ list_length = len(w.where)
+                    for index, i in enumerate(w.where):
                         for ii in i[1][1]:
                             if i[1][0] != "images/momphone.png":
                                 hbox:
                                     xalign 0.0 spacing 0
                                     $mms = str(ii)
                                     if previous_d_who != i[1][0]:
-                                        if ii == w.what:
+                                        if ii == w.what and index == list_length - 1:
                                             add i[1][0] yalign 0.0 at message_appear_icon()
                                         else:
                                             add i[1][0] yalign 0.0
                                     if "mms.png" in mms: 
                                         frame:
-                                            style "phone_left" xoffset
+                                            style "phone_left" #xoffset
                                             imagebutton idle Transform(mms, size=(310, 220), fit="contain") action Show("mmsmessage", i = mms)
                                     else:
                                         frame:
-                                            style "phone_left" xoffset
-                                            if ii == w.what:
+                                            style "phone_left" #xoffset
+                                            if ii == w.what and index == list_length - 1:
                                                 text ii color "#000000" at message_appear(1)  
                                             else:
-                                                text ii color "#000000"       
+                                                text ii color "#000000"
                             else:
                                 hbox:
                                     xalign 0.0 spacing 0
                                     $mms = str(ii)
                                     if "mms.png" in mms: 
                                         frame:
-                                            style "phone_right" xoffset
+                                            style "phone_right" #xoffset
                                             imagebutton idle Transform(mms, size=(310, 220), fit="contain") action Show("mmsmessage", i = mms)
                                     else:
                                         frame:
-                                            style "phone_right" xoffset
-                                            if ii == w.what:
+                                            style "phone_right" #xoffset
+                                            if ii == w.what and index == list_length - 1:
                                                 text ii color "#000000" at message_appear(-1)  
                                             else:
                                                 text ii color "#000000"
                                         if previous_d_who != i[1][0]:
-                                            if ii == w.what:
+                                            if ii == w.what and index == list_length - 1:
                                                 add i[1][0] yalign 0.0 at message_appear_icon()
                                             else:
                                                 add i[1][0] yalign 0.0
-                        $ previous_d_who = i[1][0]
+                            $previous_d_who = i[1][0]
+
 
         if persistent.startsms:
             $persistent.startsms = False
@@ -215,7 +216,6 @@ screen smshistory:
                             frame style_prefix None:
                                 style "phone_left"
                                 textbutton a.what action [SetVariable('persistent.startsms', True),Show("phonesms", w = a)]
-
 
 ##### Test Script###
 
