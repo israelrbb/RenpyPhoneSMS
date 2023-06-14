@@ -2,8 +2,8 @@
 
 
 init -1 python:
-    phone_position_y = 0.5
     phone_position_x = 0.3
+    phone_position_y = 0.5
     background_position_y = 0.44
 
 transform phone_transform(pXalign=0.5, pYalign=0.5):
@@ -75,7 +75,6 @@ define persistent.who = None
 #########
 ###main part of the code####
 ##############
-
 init python:
     class contacts:
         def __init__(self, who,img, tone):
@@ -172,8 +171,6 @@ screen phonesms(w):
                                             else:
                                                 add i[1][0] yalign 0.0
                             $previous_d_who = i[1][0]
-
-
         if persistent.startsms:
             $persistent.startsms = False
             frame style_prefix None:
@@ -181,7 +178,7 @@ screen phonesms(w):
                 ypos .91
                 xpos -.02
                 $a = str(w.where[0][0])+"test"
-                textbutton "Send new message" action Jump(a)
+                textbutton "Send new message" action [Hide("phonesms"),Hide("smshistory"), Jump(a)]
     #########################################################multimediamessage###########################################
 
 screen mmsmessage(i):
@@ -193,7 +190,7 @@ screen mmsmessage(i):
 screen smshistory:
     modal True
     style_prefix "phoneFrame" 
-    frame at phone_transform(phone_position_x, phone_position_y):
+    frame at phone_appear(phone_position_x, phone_position_y):
         hbox:
             xysize(500,20)
             text "Contacts" xpos .35 ypos .05
@@ -216,6 +213,7 @@ screen smshistory:
                                 style "phone_left"
                                 textbutton a.what action [SetVariable('persistent.startsms', True),Show("phonesms", w = a)]
 
+
 ##### Test Script###
 
 label phone_example:
@@ -223,9 +221,13 @@ label phone_example:
     mc "Hello"
     mc "Welcome to my phone code"
     mc "Lets get started"
-    $renpy.pause(3)
+    window hide
     ### the sms screen takes 3 elements separated by "," ### the character, the message, the list to append to###
     $ ksms.sms("Hello!",True) #the true tells it this is the first message transition the phone in
+    $ ksms.sms("How are you?")
+    $ ksms.sms("How are you?")
+    $ mcsms.sms("Im doing good and yourself?’")
+    $ mcsms.sms("Im doing good and yourself?’")
     $ ksms.sms("How are you?")
     $ mcsms.sms("Im doing good and yourself?’")
     $ psms.sms("Hey I see you are texting Kim!")
@@ -273,13 +275,13 @@ label endexample:
     call screen smshistory
   
 label Kimtest:
-    $ mcsms.sms("Hey just testing this new code")
+    $ mcsms.sms("Hey just testing this new code",False, False)
     $ ksms.sms("Hey there!")
     $ mcsms.sms("looks like its working")
     $ ksms.sms("Awesome")
     jump end
 label Patytest:
-    $ mcsms.sms("Hey just testing this new code")
+    $ mcsms.sms("Hey just testing this new code",False, False)
     $ psms.sms("hey there!")
     $ mcsms.sms("looks like its working")
     $ psms.sms("hey there!")
@@ -290,3 +292,4 @@ label end:
     mc "Thanks for looking at my code"
 
     return
+
